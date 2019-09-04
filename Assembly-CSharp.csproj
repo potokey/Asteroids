@@ -63,10 +63,13 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Controllers\AsteroidController.cs" />
     <Compile Include="Assets\Scripts\Controllers\BulletController.cs" />
+    <Compile Include="Assets\Scripts\Controllers\InterfaceController.cs" />
+    <Compile Include="Assets\Scripts\Controllers\MainMenuController.cs" />
     <Compile Include="Assets\Scripts\Controllers\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Controllers\StartupController.cs" />
     <Compile Include="Assets\Scripts\Enums\AsteroidTypeEnum.cs" />
     <Compile Include="Assets\Scripts\Enums\PrefabEnum.cs" />
+    <Compile Include="Assets\Scripts\Helpers\Aggregator.cs" />
     <Compile Include="Assets\Scripts\Helpers\PrefabsHelper.cs" />
     <Compile Include="Assets\Scripts\Helpers\RandomHelper.cs" />
     <None Include="Assets\Planets\shader\two_side_shader.shader" />

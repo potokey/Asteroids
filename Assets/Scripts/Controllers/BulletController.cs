@@ -28,27 +28,29 @@ public class BulletController : MonoBehaviour
             switch (type)
             {
                 case AsteroidTypeEnum.Small:
+                    Aggregator.Publish("AddPoints", 1);
                     break;
                 case AsteroidTypeEnum.Medium:
-                    for (int i = 0; i < 2; i++)
-                    {
+                    Aggregator.Publish("AddPoints", 2);
+
+                    for (int i = 0; i < 2; i++)                                           
                         CreateAsteroid(PrefabEnum.AsteroidSmall, position);
-                    }
+                    
                     break;
                 case AsteroidTypeEnum.Big:
-                    PrefabsHelper.CreatePrefab(PrefabEnum.AsteroidMedium, position);
-                    PrefabsHelper.CreatePrefab(PrefabEnum.AsteroidMedium, position);
+                    Aggregator.Publish("AddPoints", 3);
+
+                    for (int i = 0; i < 2; i++)                    
+                        PrefabsHelper.CreatePrefab(PrefabEnum.AsteroidMedium, position);                    
                     break;
                 default:
                     break;
             }
-
         }
     }
 
     private void CreateAsteroid(PrefabEnum pref, Vector3 position)
     {
-        var newObj = PrefabsHelper.CreatePrefab(pref, position);
-       
+        var newObj = PrefabsHelper.CreatePrefab(pref, position);       
     }
 }
