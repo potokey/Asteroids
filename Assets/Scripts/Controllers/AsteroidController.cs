@@ -13,10 +13,4 @@ public class AsteroidController : MonoBehaviour
         var ra = Random.Range(0.1f, 1);
         rig.AddTorque(new Vector3(Random.Range(0.1f, 1), Random.Range(0.1f, 1), Random.Range(0.1f, 1)) * Random.Range(1000, 100000));
     }
-
-    void Update()
-    {
-
-    }
-
 }

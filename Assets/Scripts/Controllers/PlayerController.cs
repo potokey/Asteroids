@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
     {
         Aggregator.Subscribe<bool>("StartGame", StartGameAction);
         Aggregator.Subscribe<int>("AddPoints", AddPointsAction);
+        Aggregator.Subscribe<bool>("Shot", Shot);
+
         rigidbody = this.GetComponent<Rigidbody>();
         DynamicObjects = GameObject.Find("DynamicObjects");
         isStarted = false;
@@ -51,8 +53,8 @@ public class PlayerController : MonoBehaviour
             ShipModel.transform.localEulerAngles = new Vector3(vertical * 10, 0, horizontal * -10);
 
             rigidbody.velocity = transform.rotation * Vector3.forward * Speed;
-
-            Shot();
+            if (Input.GetKeyDown(KeyCode.Space))            
+                Shot(false);            
         }
         else
         {
@@ -60,7 +62,7 @@ public class PlayerController : MonoBehaviour
             if (collisionDate != null && DateTime.Now - collisionDate > RestartTime)
             {
                 collisionDate = null;
-                if (ActualLives==0)
+                if (ActualLives == 0)
                 {
                     Aggregator.Publish<int>("GameOver", ActualScores);
                     return;
@@ -72,10 +74,10 @@ public class PlayerController : MonoBehaviour
 
     private void ResetPositionAndStart()
     {
-        //foreach (Transform child in DynamicObjects.transform)
-        //{
-        //    Destroy(child.gameObject);
-        //}
+        foreach (Transform child in DynamicObjects.transform)
+        {
+            Destroy(child.gameObject);
+        }
         isStarted = true;
         this.transform.position = Vector3.zero;
         this.transform.rotation = Quaternion.identity;
@@ -83,14 +85,13 @@ public class PlayerController : MonoBehaviour
         ShipModel.SetActive(true);
     }
 
-    private void Shot()
+    private void Shot(bool value)
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            var bullet = PrefabsHelper.CreatePrefab(PrefabEnum.Bullet, ShipModel.transform.position, this.transform.rotation);
-            var rig = bullet.GetComponent<Rigidbody>();
-            rig.velocity = transform.rotation * Vector3.forward * Speed * 20;
-        }
+
+        var bullet = PrefabsHelper.CreatePrefab(PrefabEnum.Bullet, ShipModel.transform.position, this.transform.rotation);
+        var rig = bullet.GetComponent<Rigidbody>();
+        rig.velocity = transform.rotation * Vector3.forward * Speed * 20;
+
     }
 
     private void OnCollisionEnter(Collision collision)

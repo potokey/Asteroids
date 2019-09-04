@@ -10,25 +10,37 @@ public class MainMenuController : MonoBehaviour
     public Text HighscoreText;
     public Image GameOverImage;
     List<int> listOfScores = new List<int>();
-	// Use this for initialization
-	void Start () {
+
+    void Start()
+    {
         Aggregator.Subscribe<int>("GameOver", GameOverActions);
-	}
+
+        var toSplit = PlayerPrefs.GetString("scores");
+        if (!String.IsNullOrEmpty(toSplit))
+            listOfScores = toSplit.Split(';').Select(s => Convert.ToInt32(s)).ToList();
+
+        RefreshScoreList();
+    }
 
     private void GameOverActions(int points)
     {
         listOfScores.Add(points);
-        HighscoreText.text = String.Join("\n", listOfScores.OrderByDescending(o=>o).Select((s, i) => i + 1 + ". " + s).ToArray());
+        RefreshScoreList();
         this.gameObject.SetActive(true);
         GameOverImage.gameObject.SetActive(true);
+        PlayerPrefs.SetString("scores", String.Join(";", listOfScores.Select(s => s.ToString()).ToArray()));
+        PlayerPrefs.Save();
+    }
+
+    private void RefreshScoreList()
+    {
+        HighscoreText.text = String.Join("\n", listOfScores.OrderByDescending(o => o).Select((s, i) => i + 1 + ". " + s).ToArray());
     }
 
     public void StartButtonClick()
     {
         Aggregator.Publish("StartGame", true);
         this.gameObject.SetActive(false);
-        GameOverImage.gameObject.SetActive(false);
+        GameOverImage.gameObject.SetActive(false);        
     }
-
-    
 }

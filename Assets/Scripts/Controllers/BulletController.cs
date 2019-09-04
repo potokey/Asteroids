@@ -10,6 +10,7 @@ public class BulletController : MonoBehaviour
     {
         bulletTime = DateTime.Now;
     }
+
     void Update()
     {
         if (DateTime.Now - bulletTime > new TimeSpan(0, 0, 5))
